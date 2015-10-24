@@ -7,6 +7,9 @@ angular.module('corestudioApp', [
                                     'ui.router',
                                     'ngCookies',
                                     'LocalStorageModule',
+                                    'corestudioApp.controllers',
+                                    'corestudioApp.services',
+                                    'corestudioApp.security',
                                     'ngResource']);
 
 angular.module('corestudioApp')
@@ -35,3 +38,6 @@ angular.module('corestudioApp')
         $urlRouterProvider.otherwise('/');
 
     }]);
+
+angular.module('corestudioApp.services', []);
+angular.module('corestudioApp.controllers', []);

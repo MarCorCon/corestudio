@@ -27,6 +27,7 @@
     "angular-cookies": "~1.4.7"
   },
   "devDependencies": {
-    "angular-resource": "~1.4.7"
+    "angular-resource": "~1.4.7",
+    "angular-local-storage": "~0.2.3"
   }
 }
