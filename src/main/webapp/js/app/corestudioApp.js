@@ -35,7 +35,41 @@ angular.module('corestudioApp')
         $httpProvider.defaults.xsrfCookieName = 'CSRF-TOKEN';
         $httpProvider.defaults.xsrfHeaderName = 'X-CSRF-TOKEN';
 
-        $urlRouterProvider.otherwise('/');
+        $stateProvider.state('login', {
+            url: '/login',
+            controller: 'LoginController',
+            resolve: {
+                user:['authService', '$q', function(authService, $q) {
+                    if(authService.user) {
+                        return $q.reject({authorized: true});
+                    }
+                }]
+            },
+            templateUrl: 'partials/login.html'
+        }).state('home', {
+            url: '/home',
+            controller: 'HomeController',
+            resolve: {
+                user: ['authService', '$q', function(authService, $q) {
+                    return authService.user || $q.reject({unAuthorized: true});
+                }]
+            },
+            templateUrl: 'partials/home.html'
+        }).state('professor', {
+            url: '/professor',
+            controller: 'ProfessorController',
+            resolve: {
+                user: ['authService', '$q', function(authService, $q) {
+                    return authService.user || $q.reject({unAuthorized: true});
+                }]
+            },
+            templateUrl: 'partials/professors/professor_details.html'
+        })
+        ;
+
+        $urlRouterProvider.otherwise('/home');
+        $locationProvider.html5Mode(true);
+
 
     }]);
 
