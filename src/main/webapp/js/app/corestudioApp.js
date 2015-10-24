@@ -13,8 +13,8 @@ angular.module('corestudioApp', [
                                     'ngResource']);
 
 angular.module('corestudioApp')
-    .run(function($rootScope, $state) {
-        $rootScope.$on('$stateChangeStart', function (evente, toState, toStateParams, Principal, Auth) {
+    .run(function($rootScope, $state, Principal, Auth) {
+        $rootScope.$on('$stateChangeStart', function (evente, toState, toStateParams) {
             $rootScope.toState = toState;
             $rootScope.toStateParams = toStateParams;
 
@@ -23,7 +23,7 @@ angular.module('corestudioApp')
             }
         });
 
-        $rootScope.$on('$stateChangeSuccess', function (event, toState, toParams) {
+        $rootScope.$on('$stateChangeSuccess', function (event, toState, toParams, fromState, fromParams) {
             if (toState.name !== 'login' && $rootScope.previousStateName) {
                 $rootScope.previousStateName = fromState.name;
                 $rootScope.previousStateParams = fromParams;
