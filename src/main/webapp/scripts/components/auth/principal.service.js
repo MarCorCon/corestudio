@@ -6,7 +6,7 @@
 'use strict';
 
 angular.module('corestudioApp')
-    .factory('Principal', ['$q', 'Account', function($q, Account) {
+    .factory('Principal', function($q, Account) {
         var _identity;
         var _authenticated = false;
 
@@ -79,4 +79,4 @@ angular.module('corestudioApp')
         };
 
         return principal;
-    }]);
+    });

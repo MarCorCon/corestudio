@@ -5,7 +5,7 @@
 'user strict';
 
 angular.module('corestudioApp')
-    .factory('AuthServerProvider', ['$http', 'localStorageService', function ($http, localStorageService) {
+    .factory('AuthServerProvider', function ($http, localStorageService) {
         var authServer = {};
 
         authServer.login = function(credentials) {
@@ -42,4 +42,4 @@ angular.module('corestudioApp')
         }
 
         return authServer;
-    }]);
+    });

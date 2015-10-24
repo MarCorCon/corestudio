@@ -5,8 +5,7 @@
 'use strict';
 
 angular.module('corestudioApp')
-.factory('AuthService', ['$rootScope', '$state', '$q', 'Principal', 'AuthServerProvider',
-        function ($rootScope, $state, $q, Principal, AuthServerProvider) {
+.factory('Auth', function ($rootScope, $state, $q, Principal, AuthServerProvider) {
             var auth = {};
 
             auth.login = function (credentials, callback) {
@@ -63,4 +62,4 @@ angular.module('corestudioApp')
             };
 
             return auth;
-        }]);
+        });
