@@ -14,6 +14,7 @@ angular.module('corestudioApp', [
 
 angular.module('corestudioApp')
     .run(function($rootScope, $state, Principal, Auth) {
+    	
         $rootScope.$on('$stateChangeStart', function (evente, toState, toStateParams) {
             $rootScope.toState = toState;
             $rootScope.toStateParams = toStateParams;
@@ -29,24 +30,22 @@ angular.module('corestudioApp')
                 $rootScope.previousStateParams = fromParams;
             }
         });
+        
+        $rootScope.back = function() {
+            // If previous state is 'activate' or do not exist go to 'home'
+            if ($rootScope.previousStateName === 'activate' || $state.get($rootScope.previousStateName) === null) {
+                $state.go('home');
+            } else {
+                $state.go($rootScope.previousStateName, $rootScope.previousStateParams);
+            }
+        };
     })
     .config(['$stateProvider', '$urlRouterProvider', '$locationProvider', '$httpProvider', function($stateProvider, $urlRouterProvider, $locationProvider, $httpProvider) {
 
         $httpProvider.defaults.xsrfCookieName = 'CSRF-TOKEN';
         $httpProvider.defaults.xsrfHeaderName = 'X-CSRF-TOKEN';
 
-        $stateProvider.state('login', {
-            url: '/login',
-            controller: 'LoginController',
-            resolve: {
-                user:['authService', '$q', function(authService, $q) {
-                    if(authService.user) {
-                        return $q.reject({authorized: true});
-                    }
-                }]
-            },
-            templateUrl: 'partials/login.html'
-        }).state('home', {
+        $stateProvider.state('home', {
             url: '/home',
             controller: 'HomeController',
             resolve: {

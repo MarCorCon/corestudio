@@ -36,7 +36,7 @@ angular.module('corestudioApp')
             };
 
             auth.authorize = function (force) {
-                return Principal.inentity(force)
+                return Principal.identity(force)
                     .then(function () {
                         var isAuthenticated = Principal.isAuthenticated();
 

@@ -9,9 +9,9 @@ angular.module('corestudioApp')
         $scope.user = {};
         $scope.errors = {};
 
-        $timeout(function (){angular.element('[ng-model="username"]').focus();});
+//        $timeout(function (){angular.element('[ng-model="username"]').focus();});
         $scope.login = function (event) {
-            event.preventDefault();
+//            event.preventDefault();
             Auth.login({
                 username: $scope.username,
                 password: $scope.password,

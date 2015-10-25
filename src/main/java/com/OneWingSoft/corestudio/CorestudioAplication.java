@@ -8,6 +8,7 @@ import org.springframework.context.annotation.ComponentScan;
 
 @ComponentScan
 @EnableAutoConfiguration
+@Enablem
 @SpringBootApplication
 public class CorestudioAplication extends SpringBootServletInitializer {
 

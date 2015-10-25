@@ -49,11 +49,36 @@ public class CorestudioSecurityConfig extends WebSecurityConfigurerAdapter {
 		
 //		http.csrf().disable().authorizeRequests().anyRequest().permitAll();
 
+//		http
+//			.csrf()
+//		.and()
+//			.addFilterAfter(csrfHeaderFilter(), CsrfFilter.class)
+//			.exceptionHandling()
+//		.and()
+//			.formLogin()
+//			.loginProcessingUrl("/api/authentication")
+//			.usernameParameter("username")
+//			.passwordParameter("password")
+//			.permitAll()
+//		.and()
+//			.logout()
+//			.logoutUrl("/api/logout")
+//			.deleteCookies("JSESSIONID")
+//			.permitAll()
+//		.and()
+//			.authorizeRequests()
+//			.antMatchers("/user").authenticated()
+//			.antMatchers("/professor").authenticated();
+			
+		
+		
+			
+			
 		http.authorizeRequests().antMatchers("/user", "/index").authenticated();
 		
 		http
 		 .formLogin()
-		 .loginPage("/login")
+		 .loginProcessingUrl("/api/authentication")
 		 .failureUrl("/401")
 		 .usernameParameter("username")
 		 .passwordParameter("password")	
@@ -84,17 +109,22 @@ public class CorestudioSecurityConfig extends WebSecurityConfigurerAdapter {
 			@Override
 			protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response,
 					FilterChain filterChain) throws ServletException, IOException {
-				CsrfToken csrf = (CsrfToken) request.getAttribute(CsrfToken.class.getName());
-				if (csrf != null) {
-					Cookie cookie = WebUtils.getCookie(request, "XSRF-TOKEN");
-					String token = csrf.getToken();
-					if (cookie == null || token != null && !token.equals(cookie.getValue())) {
-						cookie = new Cookie("XSRF-TOKEN", token);
-						cookie.setPath("/");
-						response.addCookie(cookie);
-					}
-				}
-				filterChain.doFilter(request, response);
+				
+				// Spring put the CSRF token in session attribute "_csrf"
+		        CsrfToken csrfToken = (CsrfToken) request.getAttribute("_csrf");
+
+		        // Send the cookie only if the token has changed
+		        String actualToken = request.getHeader("X-CSRF-TOKEN");
+		        if (actualToken == null || !actualToken.equals(csrfToken.getToken())) {
+		            // Session cookie that will be used by AngularJS
+		            String pCookieName = "CSRF-TOKEN";
+		            Cookie cookie = new Cookie(pCookieName, csrfToken.getToken());
+		            cookie.setMaxAge(-1);
+		            cookie.setHttpOnly(false);
+		            cookie.setPath("/");
+		            response.addCookie(cookie);
+		        }
+		        filterChain.doFilter(request, response);
 			}
 		};
 	}
@@ -105,7 +135,7 @@ public class CorestudioSecurityConfig extends WebSecurityConfigurerAdapter {
 	 */
 	private CsrfTokenRepository csrfTokenRepository() {
 		HttpSessionCsrfTokenRepository repository = new HttpSessionCsrfTokenRepository();
-		repository.setHeaderName("X-XSRF-TOKEN");
+		repository.setHeaderName("X-CSRF-TOKEN");
 		return repository;
 	}
 	

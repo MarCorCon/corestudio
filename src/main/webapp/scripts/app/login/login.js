@@ -12,12 +12,8 @@ angular.module('corestudioApp')
                 data: {
                     authorities: [],
                 },
-                views: {
-                    'content@': {
-                        templateUrl: 'scripts/app/login/login.html',
-                        controller: 'LoginController'
-                    }
-                },
+                templateUrl: 'scripts/app/login/login.html',
+                controller: 'LoginController',
                 resolve: {
 
                 }
